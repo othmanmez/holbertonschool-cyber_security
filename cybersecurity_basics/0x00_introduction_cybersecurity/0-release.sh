@@ -1,2 +1,2 @@
 #!/bin/bash
-. /etc/os-release && echo "$NAME"
+lsb_release -si
