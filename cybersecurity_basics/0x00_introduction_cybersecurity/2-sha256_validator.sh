@@ -1,2 +1,3 @@
 #!/bin/bash
-if [ -n "$1" ]; then if [ -n "$2" ]; then if [ "$(sha256sum "$1" 2>/dev/null | cut -d ' ' -f1)" = "$2" ]; then echo "$1: OK"; else echo "$1: FAILLED"; fi; else echo "$1: FAILLED"; fi; else echo "$1: FAILLED"; fi
+hash=$(sha256sum "$1" 2>/dev/null | cut -d" " -f1)
+[ "$hash" = "$2" ] && echo "$1: OK" || echo "$1: FAIL"
