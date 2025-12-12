@@ -1,2 +1,2 @@
 #!/bin/bash
-dig $1 A NS SOA MX TXT +noall +answer
+dig $1 any +noall +answer
