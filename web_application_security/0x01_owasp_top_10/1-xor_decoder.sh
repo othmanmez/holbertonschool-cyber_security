@@ -1,23 +1,12 @@
 #!/bin/bash
+# WebSphere XOR decoder - Decodes obfuscated passwords/data from WebSphere
+# Usage: ./1-xor_decoder.sh {xor}KzosKw==
 
-# Check argument
-if [ $# -ne 1 ]; then
-    exit 1
-fi
-
-# Remove {xor} prefix
-encoded="${1#\{xor\}}"
-
-# Base64 decode
-decoded=$(echo "$encoded" | base64 -d 2>/dev/null)
-
-# XOR decode with key 0x5A
-result=""
-for (( i=0; i<${#decoded}; i++ )); do
-    char=$(printf '%d' "'${decoded:$i:1}")
-    result+=$(printf "\\$(printf '%03o' $((char ^ 0x5A)))")
-done
-
-# Output result
-echo "$result"
-
+# Process: Remove {xor} prefix, decode base64, XOR each byte with key 95
+python3 -c "
+import base64                                    # Import base64 module for decoding
+data = '$1'.split('}', 1)[1]                    # Remove '{xor}' prefix from input argument
+decoded = base64.b64decode(data)                 # Decode the base64 encoded string to bytes
+result = ''.join(chr(b ^ 95) for b in decoded)  # XOR each byte with 95 and convert to char
+print(result, end='')                           # Print result without newline
+" 2>/dev/null                                   # Redirect errors to /dev/null (silent)
