@@ -3,6 +3,28 @@
 Ce dossier contient une série d’exercices pratiques illustrant plusieurs vulnérabilités du **OWASP Top 10**, à travers un environnement volontairement vulnérable. Chaque task vise à comprendre, identifier et exploiter une faille de sécurité web réelle.
 
 ---
+A1 – Broken Access Control
+## 📌Task 0 : Hijack a Session
+
+Objectif : Identifier un pattern prévisible dans la génération des cookies de session hijack_session afin de démontrer une vulnérabilité de type Session Hijacking.
+
+Approche : En envoyant plusieurs requêtes HTTP vers l’endpoint vulnérable, on observe que le cookie hijack_session suit un schéma prévisible :
+
+Une partie UUID
+
+Un compteur incrémental
+
+Un timestamp
+
+Un compteur qui saute indique qu’une autre session utilisateur a été créée, ce qui rend la session prédictible.
+
+Commande utilisée :
+
+for i in {1..10}; do
+curl -s -I http://web0x01.hbtn/a1/hijack_session/ | awk '/hijack_session/ {print $2}';
+done
+
+Cette commande permet de récupérer plusieurs cookies hijack_session et d’identifier les valeurs manquantes exploitables.
 
 ## 📌 Task 1 – A2: Cryptographic Failures
 
